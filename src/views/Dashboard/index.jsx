@@ -13,7 +13,7 @@ import Header from "../Header";
 import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAllProperty } from "../../services";
 
 const properties = [
@@ -112,7 +112,14 @@ export const Dashboard = () => {
   const [anyPropertyLiked, setAnyPropertyLiked] = useState(false);
   const [property, setProperty] = useState("");
   const location = useLocation();
-  const {userType} = location.state;
+  const navigate = useNavigate();
+
+  let userType = ""; // Initialize userType as empty string or any default value
+  
+  // Safely access userType from location.state
+  if (location.state) {
+    userType = location.state.userType;
+  }
 
   const handleLike = (property) => {
     // Toggle the liked status for demonstration purposes
@@ -130,12 +137,19 @@ export const Dashboard = () => {
 
   const getProperty = async() => {
     try {
-      const res = await getAllProperty();
+      if(userType === "Buyer"){
+        const res = await getAllProperty();
+      setProperty(res.data.data.options);
       console.log("res from getProperty", res);
+      } else{
+        navigate("/login")
+      }
     } catch (error) {
       console.log("error in getting property");
     }
   }
+
+  console.log("userType", userType)
 
   useEffect(() => {
     getProperty()

@@ -23,6 +23,9 @@ function App() {
       element: <Profile />,
     },
   ]);
+
+  router.defaultRoute = "/login";
+
   return (
     <>
       <RouterProvider router={router} />
