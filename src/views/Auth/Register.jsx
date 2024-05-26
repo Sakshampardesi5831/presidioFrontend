@@ -10,7 +10,7 @@ export const Register = () => {
       placeholder: "Enter your first name",
       attributes: {},
     },
-    { 
+    {
       id: "lastName",
       name: "lastName",
       label: "Last name",
@@ -49,18 +49,18 @@ export const Register = () => {
 
   const radioField = [
     {
-        value: "Buyers",
+      value: "Buyers",
     },
     {
-        value: "Sellers",
-    }
-  ]
+      value: "Sellers",
+    },
+  ];
 
   const nextBtn = {
     text: "Login",
     link: "/login",
-    desc: "if you already register please"
-  }
+    desc: "if you already register please",
+  };
 
   return (
     <>
@@ -68,11 +68,11 @@ export const Register = () => {
         textFields={textFields}
         title={title}
         btnText={btnText}
-        radioField = {radioField}
+        radioField={radioField}
         onRadioSelectionChange={(selectedValue) =>
           console.log("Selected Radio Button:", selectedValue)
         }
-        nextBtn = {nextBtn}
+        nextBtn={nextBtn}
       />
     </>
   );

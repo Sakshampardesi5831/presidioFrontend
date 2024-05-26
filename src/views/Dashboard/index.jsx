@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   CardContent,
+  Container,
   Grid,
   Typography,
 } from "@mui/material";
@@ -107,9 +108,9 @@ export const Dashboard = () => {
   const [anyPropertyLiked, setAnyPropertyLiked] = useState(false);
 
   const handleLike = (property) => {
-    if(property.likes === true){
+    if (property.likes === true) {
       property.likes = false;
-    } else{
+    } else {
       property.likes = true;
     }
   };
@@ -120,87 +121,101 @@ export const Dashboard = () => {
   return (
     <>
       <Header />
-      <h1>Dashboard</h1>
-      <Grid sx={{ display: "flex", gap: "30px", flexWrap: "wrap", justifyContent: "center" }}>
-        {properties.map((item, index) => (
-          <Card key={index} sx={{ maxWidth: 345 }}>
-            <img
-              src={item.imageUrl}
-              alt={item.title}
-              style={{ width: "100%", height: "auto" }}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {item.title}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                ${item.price}
-              </Typography>
-              <Typography variant="body2" color="text.primary">
-                Bedrooms: {item.bedrooms}
-                <br />
-                Bathrooms: {item.bathrooms}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {item.desc}
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  float: "left",
-                  mt: "20px",
-                }}
-                onClick={() => setShowDetails(true)}
-              >
-                I'm Interested
-              </Button>
-              <Box sx={{ mt: "20px" }}>
-                <FavoriteIcon
-                  fontSize="large"
+      <Container sx={{ py: "84px" }}>
+        <Typography
+          variant="h4"
+          sx={{ pb: "24px", fontWeight: 600, textAlign: "center" }}
+        >
+          Dashboard
+        </Typography>
+        <Grid
+          sx={{
+            display: "flex",
+            gap: "30px",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          {properties.map((item, index) => (
+            <Card key={index} sx={{ maxWidth: 345 }}>
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                style={{ width: "100%", height: "auto" }}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {item.title}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  ${item.price}
+                </Typography>
+                <Typography variant="body2" color="text.primary">
+                  Bedrooms: {item.bedrooms}
+                  <br />
+                  Bathrooms: {item.bathrooms}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.desc}
+                </Typography>
+                <Button
+                  variant="contained"
                   sx={{
-                    cursor: "pointer",
-                    color: item.liked ? "red" : "grey", // Fill color if liked
+                    float: "left",
+                    mt: "20px",
                   }}
-                  onClick={() => handleLike(item)}
-                />
-              </Box>
-            </CardContent>
-            <Box
-              sx={{
-                // marginTop: "60px",
-                display: "flex",
-                // marginBottom: "20px",
-                gap: "20px",
-              }}
-            >
-              <Box>
-                {showDetails && (
-                  <Accordion
-                    expanded={expanded === "sellerDetails"}
-                    onChange={handleChange("sellerDetails")}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="seller-details-content"
-                      id="seller-details-header"
-                      sx={{
-                        "&.MuiAccordionSummary-content": {
-                          padding: 0, // Adjusts internal padding if necessary
-                        },
-                      }}
+                  onClick={() => setShowDetails(true)}
+                >
+                  I'm Interested
+                </Button>
+                <Box sx={{ mt: "20px" }}>
+                  <FavoriteIcon
+                    fontSize="large"
+                    sx={{
+                      cursor: "pointer",
+                      color: item.liked ? "red" : "grey", // Fill color if liked
+                    }}
+                    onClick={() => handleLike(item)}
+                  />
+                </Box>
+              </CardContent>
+              <Box
+                sx={{
+                  // marginTop: "60px",
+                  display: "flex",
+                  // marginBottom: "20px",
+                  gap: "20px",
+                }}
+              >
+                <Box>
+                  {showDetails && (
+                    <Accordion
+                      expanded={expanded === "sellerDetails"}
+                      onChange={handleChange("sellerDetails")}
                     >
-                      Seller Details
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>{item.sellerDetails}</Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                )}
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="seller-details-content"
+                        id="seller-details-header"
+                        sx={{
+                          "&.MuiAccordionSummary-content": {
+                            padding: 0, // Adjusts internal padding if necessary
+                          },
+                        }}
+                      >
+                        Seller Details
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>{item.sellerDetails}</Typography>
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
+                </Box>
               </Box>
-            </Box>
-          </Card>
-        ))}
-      </Grid>
+            </Card>
+          ))}
+        </Grid>
+      </Container>
     </>
   );
 };

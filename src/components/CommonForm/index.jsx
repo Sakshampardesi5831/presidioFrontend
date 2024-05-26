@@ -89,7 +89,7 @@ export const CommonForm = ({
         spacing={2}
         sx={{
           maxWidth: 500,
-          margin: "auto",
+          marginTop: "24px",
           backgroundColor: "#fff",
           padding: "30px",
           borderRadius: "5px",
