@@ -46,14 +46,3 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );   
-
-// export const publicAxiosInstance = axios.create({
-//   baseURL: publicBaseURL,
-//   timeout: 100000,
-//   headers: {
-//     "Content-Type": "application/json",
-//     accept: "application/json",
-//     // Authorization: `Bearer ${getAccessTokenFromStorage()}`,
-//   },
-// });
-

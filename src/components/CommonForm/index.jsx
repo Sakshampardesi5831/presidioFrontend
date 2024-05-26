@@ -14,10 +14,11 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
-import { buyerSignUp, sellerSignUp } from "../../services";
+import { buyerLogin, buyerSignUp, sellerLogin, sellerSignUp } from "../../services";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const CommonForm = ({
   textFields,
@@ -31,6 +32,9 @@ export const CommonForm = ({
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false); // State for Snackbar open/close
   const [message, setMessage] = useState(""); //
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const initialValues = {};
   if (textFields) {
     textFields.forEach((field) => {
@@ -45,21 +49,45 @@ export const CommonForm = ({
   const onSubmit = async (values, { resetForm }) => {
     console.log("values", values);
     try {
-      if (values.userType) {
+      if(location.pathname === '/register'){
+        if (values.userType) {
+          if (values.userType === "Buyers") {
+            const res = await buyerSignUp(values);
+            console.log("res from registration form", res);
+            if (res.data.success) {
+              setMessage("Buyer registration successful"); // Set success message
+              setOpen(true); // Open Snackbar
+              resetForm();
+            }
+          } else {
+            const res = await sellerSignUp(values);
+            console.log("res from registration form", res);
+            if (res.data.success) {
+              setMessage("Seller registration successful"); // Set success message
+              setOpen(true); // Open Snackbar
+              resetForm();
+            }
+          }
+        }
+      } else if(location.pathname === '/login'){
         if (values.userType === "Buyers") {
-          const res = await buyerSignUp(values);
-          console.log("res from registration form", res);
-          if (res.data.success) {
-            setMessage("Buyer registration successful"); // Set success message
+          const res = await buyerLogin(values);
+          console.log("res from buyer loign form", res);
+          if (res.status === 200) {
+            localStorage.setItem("token", res.data.accessToken);
+            setMessage("Buyer login successful"); // Set success message
             setOpen(true); // Open Snackbar
+            navigate('/', {state: {userType: "Buyer"}})
             resetForm();
           }
         } else {
-          const res = await sellerSignUp(values);
-          console.log("res from registration form", res);
-          if (res.data.success) {
-            setMessage("Seller registration successful"); // Set success message
+          const res = await sellerLogin(values);
+          localStorage.setItem("token", res.data.accessToken);
+          console.log("res from seller login form", res);
+          if (res.status === 200) {
+            setMessage("Seller login success"); // Set success message
             setOpen(true); // Open Snackbar
+            navigate('/', {state: {userType: "Seller"}})
             resetForm();
           }
         }
@@ -89,7 +117,7 @@ export const CommonForm = ({
         spacing={2}
         sx={{
           maxWidth: 500,
-          marginTop: "24px",
+          margin: "auto",
           backgroundColor: "#fff",
           padding: "30px",
           borderRadius: "5px",
